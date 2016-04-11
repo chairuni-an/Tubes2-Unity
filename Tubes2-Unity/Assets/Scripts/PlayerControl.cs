@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour {
 	public float speed = 6.0f;
 	public float jumpSpeed = 8.0f;
 	public float gravity = 20.0f;
+	public GameControlScript control;
 	private Vector3 moveDirection = Vector3.zero;
 	
 	//start 
@@ -35,16 +36,17 @@ public class PlayerControl : MonoBehaviour {
 	
 	//check if the character collects the powerups or the snags
 	void OnTriggerEnter(Collider other)
-	{
+	{               
 		if(other.gameObject.name == "Powerup(Clone)")
 		{
-			//do something
+			control.PowerupCollected();
 		}
-		else if(other.gameObject.name == "Obstacle(Clone)")
+		else if(other.gameObject.name == "Obstacle(Clone)" && isGrounded == true)
 		{
-			//do something
-		} 
-		Destroy(other.gameObject);            //destroy the snag or powerup if colllected by the player
+			control.ObstacleCollected();
+		}
+		
+		Destroy(other.gameObject);
 		
 	}
 }
