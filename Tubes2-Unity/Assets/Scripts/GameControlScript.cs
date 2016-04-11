@@ -8,6 +8,7 @@ public class GameControlScript : MonoBehaviour {
 	float totalTimeElapsed = 0;   
 	float score=0f;      //total score
 	public bool isGameOver = false;
+	public GUISkin skin;
 	// Use this for initialization
 	void Start(){
 		Time.timeScale = 1;  // set the time scale to 1, to start the game world. This is needed if you restart the game from the game over menu
@@ -38,6 +39,7 @@ public class GameControlScript : MonoBehaviour {
 
 	void OnGUI()
 	{
+		GUI.skin=skin; //use the skin in game over menu
 		//check if game is not over, if so, display the score and the time left
 		if(!isGameOver)    
 		{
