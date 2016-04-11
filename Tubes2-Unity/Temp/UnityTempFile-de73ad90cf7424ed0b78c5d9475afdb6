@@ -72,6 +72,7 @@
 -define:CROSS_PLATFORM_INPUT
 'Assets/Scripts/GroundControl.cs'
 'Assets/Scripts/ObstacleScript.cs'
+'Assets/Scripts/PlayerControl.cs'
 'Assets/Scripts/PowerupScript.cs'
 'Assets/Scripts/SpawnScript.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
