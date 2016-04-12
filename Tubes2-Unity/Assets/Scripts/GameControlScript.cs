@@ -2,9 +2,12 @@
 using System.Collections;
 
 public class GameControlScript : MonoBehaviour {
-	float timeRemaining = 10;   //Pre-earned time
-	float timeExtension = 3f;   //time to extend by on collecting powerup
-	float timeDeduction = 2f;   //time to reduce, on collecting the snag
+	float timeRemaining = 6.0f;   //Pre-earned time
+	float timeExtension = 3.0f;   //time to extend by on collecting powerup
+	float timeDeduction = 2.0f;   //time to reduce, on collecting the snag
+	float liveRemaining = 4.0f;   //Pre-earned live
+	float liveExtension = 1.0f;   //live to extend by on collecting powerup
+	float liveDeduction = 1.0f;   //live to reduce, on collecting the snag
 	float totalTimeElapsed = 0;   
 	float score=0f;      //total score
 	public bool isGameOver = false;
@@ -20,21 +23,37 @@ public class GameControlScript : MonoBehaviour {
 			return;      //move out of the function
 		
 		totalTimeElapsed += Time.deltaTime; 
-		score = totalTimeElapsed*100;  //calculate the score based on total time elapsed
-		timeRemaining -= Time.deltaTime; //decrement the time remaining by 1 sec every update
-		if(timeRemaining <= 0){
+		score = totalTimeElapsed*2;  //calculate the score based on total time elapsed
+		timeRemaining -= Time.deltaTime*0.1f; //decrement the time remaining by 1 sec every update
+		if(timeRemaining <= 0 || liveRemaining <= 0){
 			isGameOver = true;    // set the isGameOver flag to true if timeRemaining is zero
 		}
 	}
 
-	public void PowerupCollected()
+	public void PowerupTimeCollected()
 	{
 		timeRemaining += timeExtension;   //add time to the time remaining
+		if (timeRemaining > 6.0f) {
+			timeRemaining = 6.0f;
+		}
 	}
 	
-	public void ObstacleCollected()
+	public void ObstacleTimeCollected()
 	{
 		timeRemaining -= timeDeduction;   // deduct time
+	}
+
+	public void PowerupLiveCollected()
+	{
+		liveRemaining += liveExtension;   //add time to the time remaining
+		if (liveRemaining > 4.0f) {
+			liveRemaining = 4.0f;
+		}
+	}
+	
+	public void ObstacleLiveCollected()
+	{
+		liveRemaining -= liveDeduction;   // deduct time
 	}
 
 	void OnGUI()
@@ -43,7 +62,8 @@ public class GameControlScript : MonoBehaviour {
 		//check if game is not over, if so, display the score and the time left
 		if(!isGameOver)    
 		{
-			GUI.Label(new Rect(10, 10, Screen.width/5, Screen.height/6),"TIME LEFT: "+((int)timeRemaining).ToString());
+			GUI.Label(new Rect(10, 10, Screen.width/5, Screen.height/6),"IP: "+((float)liveRemaining).ToString("F1"));
+			GUI.Label(new Rect(10, 10+Screen.height/6, Screen.width/5, Screen.height/6),"waktu:\n"+((float)timeRemaining).ToString("F1")+" tahun");
 			GUI.Label(new Rect(Screen.width-(Screen.width/6), 10, Screen.width/6, Screen.height/6), "SCORE: "+((int)score).ToString());
 		}
 		//if game over, display game over <span id="IL_AD2" class="IL_AD">menu</span> with score
@@ -52,7 +72,7 @@ public class GameControlScript : MonoBehaviour {
 			Time.timeScale = 0; //set the timescale to zero so as to stop the game world
 			
 			//display the final score
-			GUI.Box(new Rect(Screen.width/4, Screen.height/4, Screen.width/2, Screen.height/2), "GAME OVER\nYOUR SCORE: "+(int)score);
+			GUI.Box(new Rect(Screen.width/4, Screen.height/4, Screen.width/2, Screen.height/2), "Anda DO!!!\nLama Studi: "+((float) score).ToString("F1"));
 			
 			//restart the game on click
 			if (GUI.Button(new Rect(Screen.width/4+10, Screen.height/4+Screen.height/10+10, Screen.width/2-20, Screen.height/10), "RESTART")){
@@ -61,7 +81,7 @@ public class GameControlScript : MonoBehaviour {
 			
 			//load the main menu, which as of now has not been created
 			if (GUI.Button(new Rect(Screen.width/4+10, Screen.height/4+2*Screen.height/10+10, Screen.width/2-20, Screen.height/10), "MAIN MENU")){
-				Application.LoadLevel(1);
+				Application.LoadLevel(Application.loadedLevel);
 			}
 			
 			//exit the game

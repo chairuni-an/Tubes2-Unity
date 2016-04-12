@@ -23,11 +23,14 @@ public class PlayerControl : MonoBehaviour {
 			moveDirection = transform.TransformDirection(moveDirection);  //apply this direction to the character
 			moveDirection *= speed;            //increase the speed of the movement by the factor "speed" 
 			
-			if (Input.GetButton ("Jump")) {          //play "Jump" animation if character is grounded and spacebar is pressed;
-				moveDirection.y = jumpSpeed;         //add the jump height to the character
-			}
-			if(controller.isGrounded)           //set the flag isGrounded to true if character is grounded
+			if(controller.isGrounded) {          //set the flag isGrounded to true if character is grounded
 				isGrounded = true;
+				GetComponent<Animator>().SetBool("OnGround",true);
+			}
+			if (Input.GetButton ("Jump")) {          //play "Jump" animation if character is grounded and spacebar is pressed;
+				moveDirection.y = jumpSpeed; //add the jump height to the character
+				GetComponent<Animator>().SetBool("OnGround",false);
+			}
 		}
 		
 		moveDirection.y -= gravity * Time.deltaTime;       //Apply gravity  
@@ -37,13 +40,20 @@ public class PlayerControl : MonoBehaviour {
 	//check if the character collects the powerups or the snags
 	void OnTriggerEnter(Collider other)
 	{               
-		if(other.gameObject.name == "Powerup(Clone)")
+		if(other.gameObject.name == "PowerupPrestasi(Clone)")
 		{
-			control.PowerupCollected();
+			control.PowerupTimeCollected();
 		}
-		else if(other.gameObject.name == "Obstacle(Clone)" && isGrounded == true)
+		else if((other.gameObject.name == "ObstaclePelanggaran1(Clone)" || other.gameObject.name == "ObstaclePelanggaran2(Clone)") && isGrounded == true)
 		{
-			control.ObstacleCollected();
+			control.ObstacleTimeCollected();
+		}else if(other.gameObject.name == "PowerupIP(Clone)")
+		{
+			control.PowerupLiveCollected();
+		}
+		else if(other.gameObject.name == "ObstacleMengulang(Clone)" && isGrounded == true)
+		{
+			control.ObstacleLiveCollected();
 		}
 		
 		Destroy(other.gameObject);

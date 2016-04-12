@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\CountDownScript.cs" />
      <Compile Include="Assets\Scripts\GameControlScript.cs" />
      <Compile Include="Assets\Scripts\GroundControl.cs" />
+     <Compile Include="Assets\Scripts\LightScript.cs" />
      <Compile Include="Assets\Scripts\MainMenuScript.cs" />
      <Compile Include="Assets\Scripts\ObstacleScript.cs" />
      <Compile Include="Assets\Scripts\PauseMenuScript.cs" />
